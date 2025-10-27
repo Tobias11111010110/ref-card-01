@@ -1,4 +1,4 @@
-name: Java CI/CD
+name: Java CI/CD with Docker
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
-
 
 jobs:
   build:
@@ -33,6 +32,14 @@ jobs:
       - name: Build and test with Maven
         run: mvn -B package --file pom.xml
 
-      # Optional: Publish step – add here if you want to deploy artifacts
-      # - name: Publish Artifact
-      #   run: mvn deploy
+      - name: Build Docker image
+        run: docker build -t bbw2022/ref-card-01:latest .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Push Docker image
+        run: docker push ref-card/ref-card-01:latest
