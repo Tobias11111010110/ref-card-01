@@ -42,4 +42,4 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
 
       - name: Push Docker image
-        run: docker push ref-card/ref-card-01:latest
+        run: docker push bbw2022/ref-card-01:latest
